@@ -32,7 +32,11 @@ go get -tool github.com/conao3/leanfran-go/cmd/leanfran
 go tool leanfran sync
 ```
 
-Go callers can now use `arithmetic.Twice(big.NewInt(21))`. Commit the generated Go and manifest so the application can build with Go alone.
+Go callers can use `value, err := arithmetic.Twice(big.NewInt(21))`. The error reports an invalid `Nat` input. Pure functions whose inputs need no validation return their result directly. Commit the generated Go and manifest so the application can build with Go alone.
+
+## Keep Lean values across calls
+
+Use generated methods such as `arithmetic.Value.NewNat`, `arithmetic.Handle.Twice`, and `arithmetic.Value.ReadNat` to pass an owned Lean value without converting it between calls. Inside a `leanfran.WithValues` callback, use `arithmetic.Handle.In(scope).Twice` and `arithmetic.Value.In(scope).ReadNat`. See [Keep Lean values with `Value[T]`](https://github.com/conao3/lean-leanfran/blob/master/docs/go-guide.md#keep-lean-values-with-valuet) for ownership and scoped calls.
 
 ## Verify a Go function
 
