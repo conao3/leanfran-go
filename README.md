@@ -2,12 +2,12 @@
 
 This repository mirrors the Go module from [conao3/lean-leanfran](https://github.com/conao3/lean-leanfran), where development, issues, and pull requests live.
 
-Embed Lean definitions and proofs in a Go package. `go tool leanfran sync` checks the Lean and generates Go functions and types in the same package.
+Embed Lean definitions and proofs in a Go package. `leanfran --lang go sync` checks the Lean and generates Go functions and types in the same package.
 
-Nix can install the compiler from any directory.
+Install the `leanfran` compiler and add it to your PATH.
 
 ```sh
-nix profile install 'github:conao3/lean-leanfran#go'
+nix profile install 'github:conao3/lean-leanfran#leanfran'
 ```
 
 ```go
@@ -28,8 +28,8 @@ With Go 1.26 or later and Lean and Lake from Lean 4.35.0 on your PATH, run the f
 
 ```sh
 go get github.com/conao3/leanfran-go
-go get -tool github.com/conao3/leanfran-go/cmd/leanfran
-go tool leanfran sync
+go get -tool github.com/conao3/leanfran-go/cmd/leanfran-go
+leanfran --lang go sync
 ```
 
 Go callers can use `value, err := arithmetic.Twice(big.NewInt(21))`. The error reports an invalid `Nat` input. Pure functions whose inputs need no validation return their result directly. Commit the generated Go and manifest so the application can build with Go alone.
@@ -43,7 +43,7 @@ Use generated methods such as `arithmetic.Value.NewNat`, `arithmetic.Handle.Twic
 Add `//leanfran:model refines=nibbleSpec ensures=in_range:inRange` to a top-level Go function. Define the executable specifications in a Lean block and prove the generated obligations under `lean/Proofs/`.
 
 ```sh
-go tool leanfran check --require proved
+leanfran --lang go check --require proved
 go test ./...
 ```
 
